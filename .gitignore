@@ -2,3 +2,4 @@
 .env/*
 .venv/*
 build/*
+*.exe
