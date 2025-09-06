@@ -1,28 +1,8 @@
 #include "renderer.hpp"
 #include <iostream>
 
-Renderer::Renderer(uint16_t w, uint16_t h) 
-: w_width(w), w_height(h), sdlWindow(nullptr), sdlRenderer(nullptr) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        std::cerr << "SDL Init Video Error: "<< SDL_GetError() << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-
-    sdlWindow = SDL_CreateWindow(
-        "SimulationWindow",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        w_width,
-        w_height,
-        SDL_WINDOW_SHOWN
-    );
-
-    if (!sdlWindow) {
-        std::cerr << "SDL CreateWindow Error : " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        std::exit(EXIT_FAILURE);
-    }
-
+Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw) 
+: w_width(w), w_height(h), sdlWindow(sdlw), sdlRenderer(nullptr) {
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 
     if (!sdlRenderer) {

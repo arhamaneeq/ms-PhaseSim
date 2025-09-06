@@ -2,7 +2,7 @@
 
 class Renderer {
     public:
-        Renderer(uint16_t w, uint16_t h);
+        Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow);
         ~Renderer();
 
         void update();
