@@ -2,9 +2,13 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "renderer.hpp"
+
 int main(int argc, char const *argv[])
 {
-    /* code */
+    Renderer renderer(800, 600);
+    renderer.update();      
+    renderer.waitForExit();  
 
     return 0;
 }

@@ -5,7 +5,11 @@ class Renderer {
         Renderer(uint16_t w, uint16_t h);
         ~Renderer();
 
-        void draw(const unsigned int* buffer);
+        void update();
+
+        void drawGrid();
+        void drawBox();
+        void waitForExit();
 
         uint16_t getWidth() const;
         uint16_t getHeight() const;
