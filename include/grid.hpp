@@ -1,20 +1,30 @@
 #pragma once
 
 #include <cstdint>
+#include <malloc.h>
+#include <stdexcept>
+#include "wrapper.cuh"
 
 class Grid {
+    using Cell = uint8_t;
+
     public:
         Grid(uint16_t w, uint16_t h);
         ~Grid();
 
-        unsigned int getWidth();
-        unsigned int getHeight();
+        uint16_t getWidth() const;
+        uint16_t getHeight() const;
 
-        const uint8_t* hostData();
+        const Cell* hostData() const;
+
+        void syncToDevice();
+        void syncToHost();
 
     private:
         uint16_t width, height;
 
-        uint8_t* d_cells; // device / for cuda
-        uint8_t* h_cells; // host
+        Cell* d_cells; // device / for cuda
+        Cell* h_cells; // host
+
+        uint16_t& index(uint16_t i, uint16_t j);
 };
