@@ -2,17 +2,20 @@
 
 class Renderer {
     public:
-        Renderer(unsigned int w, unsigned int h);
+        Renderer(uint16_t w, uint16_t h);
         ~Renderer();
 
         void draw(const unsigned int* buffer);
 
-        unsigned int const getWidth();
-        unsigned int const getHeight();
+        uint16_t getWidth() const;
+        uint16_t getHeight() const;
     private:
-
+        uint16_t w_width, w_height; // dimensions for window
+        uint16_t b_width, b_height; // dimensions for tiny box thingy
 
         SDL_Window* sdlWindow;
         SDL_Renderer* sdlRenderer;
         SDL_Texture* sdlTexture;
+
+        SDL_Color heatmapper(const uint8_t v, uint8_t threshold) const;
 };
