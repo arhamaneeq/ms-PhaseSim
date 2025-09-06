@@ -21,7 +21,7 @@ CU_OBJS  := $(patsubst $(SRC_DIR)/%.cu,$(BUILD_DIR)/%.o,$(CU_SRCS))
 OBJS := $(CPP_OBJS) $(CU_OBJS)
 
 # Target executable
-TARGET := ./phase
+TARGET := $(BUILD_DIR)/phase.exe
 
 # Default target
 all: $(TARGET)
@@ -29,7 +29,7 @@ all: $(TARGET)
 # Link all objects
 $(TARGET): $(OBJS)
 	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+	$(NVCC) $(OBJS) -o $@ $(LDFLAGS)
 
 # Compile C++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
