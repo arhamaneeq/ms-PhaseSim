@@ -5,6 +5,7 @@ NVCC := nvcc
 # Compiler flags
 CXXFLAGS := -Iinclude -std=c++17 -O2 -Wall
 NVCCFLAGS := -Iinclude -O2 -std=c++17
+LDFLAGS := -lSDL2
 
 # Directories
 SRC_DIR := src
@@ -20,7 +21,7 @@ CU_OBJS  := $(patsubst $(SRC_DIR)/%.cu,$(BUILD_DIR)/%.o,$(CU_SRCS))
 OBJS := $(CPP_OBJS) $(CU_OBJS)
 
 # Target executable
-TARGET := $(BUILD_DIR)/phase
+TARGET := ./phase
 
 # Default target
 all: $(TARGET)
@@ -28,7 +29,7 @@ all: $(TARGET)
 # Link all objects
 $(TARGET): $(OBJS)
 	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(OBJS) -o $@
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
 # Compile C++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -43,5 +44,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cu
 # Clean build
 clean:
 	rm -rf $(BUILD_DIR)/*
+	rm -f $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
 
 .PHONY: all clean
