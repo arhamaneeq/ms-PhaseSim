@@ -1,9 +1,11 @@
 #include "kernels.cuh"
 
-__global__ void markovStep(u_int8_t* d_input, int w, int h, float T, float mu, curandState* states) {
+__global__ void markovStep(uint8_t* d_input, int w, int h, float T, float mu, curandState* states) {
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
     int idx = y * w + x;
+
+    if (x >= w || y >= h) return;
 
     curandState localState = states[idx];
     float r1 = curand_uniform(&localState);
@@ -21,13 +23,15 @@ __global__ void markovStep(u_int8_t* d_input, int w, int h, float T, float mu, c
     float k = 1;                    // TODO: remove units, move to dimensionsless everythingggg
     float beta = 1 / (k * T);
 
-    float p_acc = min(1.0f , exp(-beta * (delE - mu * delN)));
+    float p_acc = fminf(1.0f , expf(-beta * (delE - mu * delN)));
 
     float r2 = curand_uniform(&localState);
 
     if (r2 < p_acc) {
         d_input[idx] += delN;
     }
+
+    states[idx] = localState;
 
 }
 
