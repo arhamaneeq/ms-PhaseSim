@@ -1,3 +1,5 @@
 #include <cstdint>
+#include <curand_kernel.h>
 
-void cudaStep(uint8_t* d_input, uint8_t* d_output, uint32_t width, uint32_t height);
+__global__ void markovStep(uint8_t* d_input, int w, int h, float T, float mu, curandState* states);
+__global__ void initRNG(curandState* states, unsigned long seed);

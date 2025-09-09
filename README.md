@@ -22,3 +22,7 @@ $$
 
 A site is picked at random, a move $n_i \rightarrow n_i \pm 1$ (respecting bounds: 0 - 255) is proposed. We compute $\Delta N = \pm 1$ and compute $\Delta E$ from our Hamiltonian, and accept the move with probability $p_\text{accept}$.
 
+Note now, that *a site is picked at random* carries probability of its own, and thus we need to be careful how this is implemented in massively parallel code. The canonical implementation of MCMC requires one cell being worked on at a time. If we proposed one move for every cell at the same time in parallel, then the validity of the MCMC breaks since we use $\Delta E$ s that depend on neighbouring states which are themselves changing. 
+
+The work around here is to parallelly propose moves on an alternating checkerboard lattice, such that no adjacent neighbours have the same colour.
+
