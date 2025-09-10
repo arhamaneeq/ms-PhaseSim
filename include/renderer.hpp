@@ -1,15 +1,19 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <cstdint>
+
+#include "grid.hpp"
+#include "simulator.hpp"
 
 class Renderer {
     public:
         Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow);
         ~Renderer();
 
-        void update();
+        void update(Grid* grid, Simulator* sim);
 
-        void drawGrid();
+        void drawGrid(uint16_t gridW, uint16_t gridH);
         void drawBox();
         void waitForExit();
 

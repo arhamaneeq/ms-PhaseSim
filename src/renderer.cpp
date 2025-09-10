@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 #include <iostream>
 
+
 Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw) 
 : w_width(w), w_height(h), sdlWindow(sdlw), sdlRenderer(nullptr) {
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
@@ -11,17 +12,28 @@ Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw)
         SDL_Quit();
         std::exit(EXIT_FAILURE);
     }
+
+    sdlTexture = SDL_CreateTexture(
+        sdlRenderer,
+        SDL_PIXELFORMAT_RGBA8888,
+        SDL_TEXTUREACCESS_STREAMING,
+        200,
+        200
+    );
 }
 
 Renderer::~Renderer() {
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
+    if (sdlTexture) SDL_DestroyTexture(sdlTexture);
     SDL_Quit();
 }
 
-void Renderer::drawGrid() {
-    SDL_SetRenderDrawColor(sdlRenderer, 50, 50, 50, 255);
+void Renderer::drawGrid(uint16_t gridW, uint16_t gridH) {
+    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
     SDL_RenderClear(sdlRenderer);
+    SDL_Rect dstRect {0, 0, w_width, w_height};
+    SDL_RenderCopy(sdlRenderer, sdlTexture, nullptr, &dstRect);
 }
 
 void Renderer::drawBox() {
@@ -30,8 +42,10 @@ void Renderer::drawBox() {
     SDL_RenderFillRect(sdlRenderer, &box);
 }
 
-void Renderer::update() {
-    drawGrid();
+void Renderer::update(Grid* grid, Simulator* sim) {
+    updateTexture(grid->getHostData(), grid->getWidth(), grid->getHeight());
+    
+    drawGrid(grid->getWidth(), grid->getHeight());
     drawBox();
 
     SDL_RenderPresent(sdlRenderer);
@@ -51,25 +65,37 @@ void Renderer::waitForExit() {
 
 
 SDL_Color Renderer::heatmapper(uint8_t v, uint8_t threshold) const {
-    if (v > 255) {v = 255;}
-    if (v < 0)   {v = 0;}
-
     SDL_Color color;
-    
-    // Coolwarm
+
     if (v < threshold) {
-        double t = v / threshold;
+        double t = static_cast<double>(v) / threshold;
         color.r = static_cast<Uint8>(t * 255);
         color.g = static_cast<Uint8>(t * 255);
         color.b = 255;
     } else {
-        double t = (v - 0.5) / 0.5;
+        double t = static_cast<double>(v - threshold) / (255 - threshold);
         color.r = 255;
         color.g = static_cast<Uint8>((1 - t) * 255);
         color.b = static_cast<Uint8>((1 - t) * 255);
     }
 
     color.a = 255;
-
     return color;
+}
+
+void Renderer::updateTexture(const uint8_t* data, int gridW, int gridH) {
+    void* pixels;
+    int pitch;
+    SDL_LockTexture(sdlTexture, nullptr, &pixels, &pitch);
+
+    Uint8* pixels8 = reinterpret_cast<Uint8*>(pixels);
+    for (int y = 0; y < gridH; ++y) {
+        Uint32* row = reinterpret_cast<Uint32*>(pixels8 + y * pitch);
+        for (int x = 0; x < gridW; ++x) {
+            SDL_Color c = heatmapper(data[y * gridW + x], 128);
+            row[x] = (c.a << 24) | (c.r << 16) | (c.g << 8) | c.b;
+        }
+    }
+
+    SDL_UnlockTexture(sdlTexture);
 }
