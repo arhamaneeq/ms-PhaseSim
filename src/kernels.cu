@@ -42,8 +42,6 @@ __global__ void initRNG(curandState* states, unsigned long seed) {
 }
 
 __device__ float deltaE(const uint8_t* d_input, int w, int h, int x, int y, int delN, float J, float eps) {
-    int idx = y * w + x;
-
     int xL = (x == 0) ? w - 1 : x - 1;
     int xR = (x == w - 1) ? 0 : x + 1;
     int yU = (y == 0) ? h - 1 : y - 1;
