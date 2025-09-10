@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include "renderer.hpp"
+#include "renderer.hpp"
+#include "simulator.hpp"
+#include "grid.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -27,8 +30,50 @@ int main(int argc, char const *argv[])
     }
 
     Renderer renderer(800, 600, sdlWindow);
-    renderer.update();      
-    renderer.waitForExit();  
+    Grid grid(200, 200);
+    Simulator simulator(&grid);
+    simulator.setTemperature(0.5);
+    simulator.setChemPotential(0.5);
+
+    bool quit = false;
+    SDL_Event e;
+
+    while (!quit) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            } else if (e.type == SDL_KEYDOWN) {
+                switch (e.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        quit = true;
+                        break;
+                    case SDLK_UP:
+                        simulator.setTemperature(simulator.getTemperature() + 0.1);
+                        break;
+                    case SDLK_DOWN:
+                        simulator.setTemperature(simulator.getTemperature() - 0.1);
+                        break;
+                    case SDLK_RIGHT:
+                        simulator.setChemPotential(simulator.getChemPotential() + 0.1);
+                        break;
+                    case SDLK_LEFT:
+                        simulator.setChemPotential(simulator.getChemPotential() - 0.1);
+                        break;
+                    default:
+                        std::cout << e.key.keysym.sym;
+                }
+            }
+        }
+
+        grid.syncToDevice();
+        simulator.step();
+        grid.syncToHost();
+        renderer.update(&grid, &simulator);
+
+        SDL_Delay(16);
+    }
+
+    
 
     return 0;
 }

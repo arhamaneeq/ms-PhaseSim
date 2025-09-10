@@ -13,6 +13,9 @@ class Renderer {
 
         uint16_t getWidth() const;
         uint16_t getHeight() const;
+
+        void updateTexture(const uint8_t* data, int gridW, int gridH);
+
     private:
         uint16_t w_width, w_height; // dimensions for window
         uint16_t b_width, b_height; // dimensions for tiny box thingy

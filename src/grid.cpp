@@ -25,3 +25,19 @@ void Grid::syncToHost() {
     size_t size = static_cast<size_t>(width) * height;
     copyMemory(h_cells, d_cells, size * sizeof(Cell), cudaMemcpyDeviceToHost);
 }
+
+uint8_t* Grid::getDeviceData() {
+    return d_cells;
+}
+
+uint8_t* Grid::getHostData() const {
+    return h_cells;
+}
+
+uint16_t Grid::getWidth() const {
+    return width;
+}
+
+uint16_t Grid::getHeight() const {
+    return height;
+}

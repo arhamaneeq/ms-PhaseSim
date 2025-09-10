@@ -18,4 +18,6 @@ class Simulator {
     private:
         Grid* grid;
         double T, mu;
+        int w, h;
+        curandState* randStates;
 };
