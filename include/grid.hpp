@@ -15,15 +15,15 @@ class Grid {
         uint16_t getWidth() const;
         uint16_t getHeight() const;
 
-
+        
         void syncToDevice();
         void syncToHost();
-
         
         Cell* getDeviceData();
         Cell* getHostData() const;
 
         
+
     private:
         uint16_t width, height;
 

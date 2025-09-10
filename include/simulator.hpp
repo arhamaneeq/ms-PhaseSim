@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 #include "grid.hpp"
 #include "wrapper.cuh"
