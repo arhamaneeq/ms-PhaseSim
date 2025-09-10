@@ -1,6 +1,6 @@
 #include "kernels.cuh"
 
-__global__ void markovStep(uint8_t* d_input, int w, int h, float T, float mu, curandState* states, int offset) {
+__global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, curandState* states, int offset) {
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
     int idx = y * w + x;

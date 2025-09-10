@@ -25,3 +25,23 @@ void copyMemory(void* dst, const void* src, size_t bytes, int direction) {
         throw std::runtime_error(cudaGetErrorString(err));
     }
 }
+
+void markovStep(uint8_t* d_cells, int w, int h, float T, float mu, curandState* states) {
+    dim3 block(16, 16);
+    dim3 grid((w + block.x - 1) / block.x,
+              (h + block.y - 1) / block.y
+    );
+
+    initRNG<<<grid, block>>>(states, 42);
+    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 0);
+    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 1);
+
+    cudaDeviceSynchronize();
+}
+
+curandState* genRands(int w, int h) {
+    curandState* d_states;
+    cudaMalloc(&d_states, w * h * sizeof(curandState));
+
+    return d_states;
+}
