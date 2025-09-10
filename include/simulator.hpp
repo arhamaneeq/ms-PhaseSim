@@ -17,6 +17,8 @@ class Simulator {
         double getTemperature() const;
         double getChemPotential() const;
 
+        void step();
+
     private:
         Grid* grid;
         double T, mu;

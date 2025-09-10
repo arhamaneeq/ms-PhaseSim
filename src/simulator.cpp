@@ -1,7 +1,11 @@
 #include "simulator.hpp"
 
-Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5) {
-    //
+Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5), w(grid->getWidth()), h(grid->getHeight()) {
+    randStates = genRands(w, h);
+}
+
+Simulator::~Simulator() {
+    deallocateDeviceMemory(randStates);
 }
 
 void Simulator::setTemperature(double temp) {
@@ -18,4 +22,8 @@ double Simulator::getTemperature() const {
 
 double Simulator::getChemPotential() const {
     return mu;
+}
+
+void Simulator::step() {
+    markovStep(grid->getDeviceData(), w, h, T, mu, randStates);
 }

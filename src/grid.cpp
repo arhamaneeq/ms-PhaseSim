@@ -7,8 +7,8 @@ Grid::Grid(uint16_t w, uint16_t h)
     size_t size = static_cast<size_t>(width) * height;
 
     h_cells = new Cell[size];
-    std::fill(h_cells, h_cells + size, 0);
-    d_cells = (Cell*) allocateDeviceMemory(size);
+    std::fill(h_cells, h_cells + size, 127);
+    d_cells = (Cell*) allocateDeviceMemory(size * sizeof(Cell));
 };
 
 Grid::~Grid() {
