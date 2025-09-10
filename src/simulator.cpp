@@ -23,6 +23,21 @@ double Simulator::getTemperature() const {
 double Simulator::getChemPotential() const {
     return mu;
 }
+void Simulator::incrementTemperature(double f) {
+    T += f;
+}
+
+void Simulator::decrementTemperature(double f) {
+    T -= f;
+}
+
+void Simulator::incrementChemPotential(double f) {
+    mu += f;
+}
+
+void Simulator::decrementChemPotential(double f) {
+    mu -= f;
+}
 
 void Simulator::step() {
     markovStep(grid->getDeviceData(), w, h, T, mu, randStates);

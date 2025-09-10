@@ -43,21 +43,22 @@ int main(int argc, char const *argv[])
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
+                std::cout << e.key.keysym.sym;
                 switch (e.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         quit = true;
                         break;
                     case SDLK_UP:
-                        simulator.setTemperature(simulator.getTemperature() + 0.1);
+                        simulator.incrementTemperature(0.1);
                         break;
                     case SDLK_DOWN:
-                        simulator.setTemperature(simulator.getTemperature() - 0.1);
+                        simulator.decrementTemperature(0.1);
                         break;
                     case SDLK_RIGHT:
-                        simulator.setChemPotential(simulator.getChemPotential() + 0.1);
+                        simulator.incrementChemPotential(0.1);
                         break;
                     case SDLK_LEFT:
-                        simulator.setChemPotential(simulator.getChemPotential() - 0.1);
+                        simulator.decrementChemPotent(0.1);
                         break;
                     default:
                         std::cout << e.key.keysym.sym;

@@ -17,6 +17,11 @@ class Simulator {
         double getTemperature() const;
         double getChemPotential() const;
 
+        void incrementTemperature(double f);
+        void incrementChemPotential(double f);
+        void decrementTemperature(double f);
+        void decrementChemPotential(double f);
+
         void step();
 
     private:
