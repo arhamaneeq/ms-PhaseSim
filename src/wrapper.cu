@@ -33,8 +33,8 @@ void markovStep(uint8_t* d_cells, int w, int h, float T, float mu, curandState* 
     );
 
     markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 0);
+    cudaDeviceSynchronize();
     markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 1);
-
     cudaDeviceSynchronize();
 }
 

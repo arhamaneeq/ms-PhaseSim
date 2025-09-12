@@ -67,17 +67,31 @@ void Renderer::waitForExit() {
 SDL_Color Renderer::heatmapper(uint8_t v, uint8_t threshold) const {
     SDL_Color color;
 
-    if (v < threshold) {
-        double t = static_cast<double>(v) / threshold;
-        color.r = static_cast<Uint8>(t * 255);
-        color.g = static_cast<Uint8>(t * 255);
-        color.b = 255;
-    } else {
-        double t = static_cast<double>(v - threshold) / (255 - threshold);
-        color.r = 255;
-        color.g = static_cast<Uint8>((1 - t) * 255);
-        color.b = static_cast<Uint8>((1 - t) * 255);
-    }
+    // if (v < threshold) {
+    //     double t = static_cast<double>(v) / threshold;
+    //     color.r = static_cast<Uint8>(t * 255);
+    //     color.g = static_cast<Uint8>(t * 255);
+    //     color.b = 255;
+    // } else {
+    //     double t = static_cast<double>(v - threshold) / (255 - threshold);
+    //     color.r = 255;
+    //     color.g = static_cast<Uint8>((1 - t) * 255);
+    //     color.b = static_cast<Uint8>((1 - t) * 255);
+    // }
+
+    color.r = v;
+    color.g = v;
+    color.b = v;
+
+    // if (v < threshold) {
+    //     color.r = 0;
+    //     color.g = 0;
+    //     color.b = 0;
+    // } else {
+    //     color.r = 255;
+    //     color.g = 255;
+    //     color.b = 255;
+    // }
 
     color.a = 255;
     return color;
