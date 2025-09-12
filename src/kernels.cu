@@ -21,14 +21,15 @@ __global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, c
         delN = (r1 < 0.5f) ? -1 : +1;
     }
 
-    float J = 1.0;
-    float delE = deltaE(d_input, w, h, x, y, delN, J, 0);                 // TODO: define hamilltonian
-    // float k = 1;                    // TODO: remove units, move to dimensionsless everythingggg
+    float J = 0.25;
+    float delE = deltaE(d_input, w, h, x, y, delN, J, 0);
+    // float k = 1;
     // float beta = 1 / (k * T);
     float delPhi = delE - mu * delN;
+    float p_acc;
 
-    float p_acc = fminf(1.0f , expf(-delPhi / T));
-
+    if (T <= 1e-6f) { p_acc = (delPhi < 0.0f ? 1.0f : 0.0f); }
+    else { p_acc = fminf(1.0f, expf(-delPhi / T)); }
 
     if (r2 < p_acc) {
         d_input[idx] += delN;
@@ -60,5 +61,5 @@ __device__ float deltaE(const uint8_t* d_input, int w, int h, int x, int y, int 
 }
 
 __device__ float spinVal(uint8_t v) {
-    return (v > 127) ? 1.0f : -1.0f;
+    return v - 127;
 }
