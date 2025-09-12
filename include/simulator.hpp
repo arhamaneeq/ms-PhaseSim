@@ -18,16 +18,16 @@ class Simulator {
         double getTemperature() const;
         double getChemPotential() const;
 
-        void incrementTemperature(double f);
-        void incrementChemPotential(double f);
-        void decrementTemperature(double f);
-        void decrementChemPotential(double f);
+        void incrementTemperature(float f);
+        void incrementChemPotential(float f);
+        void decrementTemperature(float f);
+        void decrementChemPotential(float f);
 
         void step();
 
     private:
         Grid* grid;
-        double T, mu;
+        float T, mu;
         int w, h;
         curandState* randStates;
 
