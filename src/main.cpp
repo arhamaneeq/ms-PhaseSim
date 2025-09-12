@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
     Grid grid(200, 200);
     Simulator simulator(&grid);
     simulator.setTemperature(0.5);
-    simulator.setChemPotential(0.5);
+    simulator.setChemPotential(-2.0f);
 
     bool quit = false;
     SDL_Event e;
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
-                std::cout << e.key.keysym.sym;
+                std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
                 switch (e.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         quit = true;
@@ -58,10 +58,10 @@ int main(int argc, char const *argv[])
                         simulator.incrementChemPotential(0.1);
                         break;
                     case SDLK_LEFT:
-                        simulator.decrementChemPotent(0.1);
+                        simulator.decrementChemPotential(0.1);
                         break;
                     default:
-                        std::cout << e.key.keysym.sym;
+                        std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
                 }
             }
         }
