@@ -93,7 +93,7 @@ void Renderer::updateTexture(const uint8_t* data, int gridW, int gridH) {
         Uint32* row = reinterpret_cast<Uint32*>(pixels8 + y * pitch);
         for (int x = 0; x < gridW; ++x) {
             SDL_Color c = heatmapper(data[y * gridW + x], 128);
-            row[x] = (c.a << 24) | (c.r << 16) | (c.g << 8) | c.b;
+            row[x] = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
         }
     }
 
