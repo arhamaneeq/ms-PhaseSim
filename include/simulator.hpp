@@ -3,6 +3,7 @@
 #include <cstdint>
 #include "grid.hpp"
 #include "wrapper.cuh"
+#include <iostream>
 
 class Simulator {
     using Cell = uint8_t;
@@ -29,4 +30,7 @@ class Simulator {
         double T, mu;
         int w, h;
         curandState* randStates;
+
+        float TCrit, Tmin, Tmax;
+        float MuCrit, MuMin, MuMax;
 };

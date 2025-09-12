@@ -2,6 +2,7 @@
 
 Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5), w(grid->getWidth()), h(grid->getHeight()) {
     randStates = genRands(w, h);
+    T = 0.02;
 }
 
 Simulator::~Simulator() {
@@ -24,18 +25,23 @@ double Simulator::getChemPotential() const {
     return mu;
 }
 void Simulator::incrementTemperature(double f) {
-    T += f;
+    if (not(T >= Tmax)) T += f;
+    std::cout << T << std::endl;
 }
 
 void Simulator::decrementTemperature(double f) {
-    T -= f;
+    if (not(T <= Tmin)) T -= f;
+    std::cout << T << std::endl;
 }
 
 void Simulator::incrementChemPotential(double f) {
-    mu += f;
+    if (not(mu >= MuMax)) mu += f;
+    std::cout << mu << std::endl;
 }
 
 void Simulator::decrementChemPotential(double f) {
+    if (not(mu >= MuMax)) mu += f;
+    std::cout << mu << std::endl;
     mu -= f;
 }
 
