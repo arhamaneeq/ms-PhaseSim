@@ -3,9 +3,9 @@
 Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5), w(grid->getWidth()), h(grid->getHeight()) {
     randStates = genRands(w, h);
 
-    MuCrit = -2;
-    MuMin = -3;
-    MuMax = -1;
+    MuCrit = -2.0f / 255.0f ;
+    MuMin = -3.0f / 255.0f;
+    MuMax = -1.0f / 255.0f;
 
     TCrit  = 0.567;
     Tmin = 0;
@@ -44,12 +44,14 @@ void Simulator::decrementTemperature(float f) {
 }
 
 void Simulator::incrementChemPotential(float f) {
+    f /= 255.0f;
     if (not(mu >= MuMax)) mu += f;
     if (mu > MuMax) mu = MuMax;
     std::cout << mu << std::endl;
 }
 
 void Simulator::decrementChemPotential(float f) {
+    f /= 255.0f;
     if (not(mu < MuMin)) mu -= f;
     if (mu < MuMin) mu = MuMin;
     std::cout << mu << std::endl;

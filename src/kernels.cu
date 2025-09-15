@@ -14,14 +14,14 @@ __global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, c
 
     int delN;
     if (d_input[idx] == 0) {
-        delN = -1;
+        delN = 1;
     } else if (d_input[idx] == 255) {
-        delN = +1;
+        delN = -1;
     } else {
         delN = (r1 < 0.5f) ? -1 : +1;
     }
 
-    float J = 0.25;
+    float J = 0.01f;
     float delE = deltaE(d_input, w, h, x, y, delN, J, 0);
     // float k = 1;
     // float beta = 1 / (k * T);
@@ -55,11 +55,13 @@ __device__ float deltaE(const uint8_t* d_input, int w, int h, int x, int y, int 
                 + spinVal(d_input[yU * w + x])
                 + spinVal(d_input[yD * w + x]);
 
-    float deltaE = - J * (float)  delN * sumN + eps * (float) delN;
+
+    float delS = delN / 127.0f;
+    float deltaE = - J * (float)  delS * sumN + eps * (float) delS;
     return deltaE;
 
 }
 
 __device__ float spinVal(uint8_t v) {
-    return v - 127;
+    return (static_cast<float>(v)) / 255.0f;
 }
