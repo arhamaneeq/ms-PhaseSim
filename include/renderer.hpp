@@ -8,7 +8,7 @@
 
 class Renderer {
     public:
-        Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow);
+        Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow, uint16_t gridW, uint16_t gridH);
         ~Renderer();
 
         void update(Grid* grid, Simulator* sim);

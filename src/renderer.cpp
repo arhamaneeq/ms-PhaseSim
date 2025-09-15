@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw) 
+Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw, uint16_t gridW, uint16_t gridH) 
 : w_width(w), w_height(h), sdlWindow(sdlw), sdlRenderer(nullptr) {
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 
@@ -17,8 +17,8 @@ Renderer::Renderer(uint16_t w, uint16_t h, SDL_Window* sdlw)
         sdlRenderer,
         SDL_PIXELFORMAT_RGBA8888,
         SDL_TEXTUREACCESS_STREAMING,
-        200,
-        200
+        gridW,
+        gridH
     );
 }
 
@@ -106,7 +106,7 @@ void Renderer::updateTexture(const uint8_t* data, int gridW, int gridH) {
     for (int y = 0; y < gridH; ++y) {
         Uint32* row = reinterpret_cast<Uint32*>(pixels8 + y * pitch);
         for (int x = 0; x < gridW; ++x) {
-            SDL_Color c = heatmapper(data[y * gridW + x], 128);
+            SDL_Color c = heatmapper(data[y * gridW + x], 127);
             row[x] = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
         }
     }

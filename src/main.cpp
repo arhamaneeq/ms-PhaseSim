@@ -9,6 +9,12 @@
 
 int main(int argc, char const *argv[])
 {
+    const int simWidth  = 1600;
+    const int simHeight = 1600;
+
+    const int winWidth  = 800;
+    const int winHeight = 600;
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL Init Video Error: "<< SDL_GetError() << std::endl;
         std::exit(EXIT_FAILURE);
@@ -18,8 +24,8 @@ int main(int argc, char const *argv[])
         "SimulationWindow",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        800,
-        600,
+        winWidth,
+        winHeight,
         SDL_WINDOW_SHOWN
     );
 
@@ -29,8 +35,8 @@ int main(int argc, char const *argv[])
         std::exit(EXIT_FAILURE);
     }
 
-    Renderer renderer(800, 600, sdlWindow);
-    Grid grid(200, 200);
+    Renderer renderer(winWidth, winHeight, sdlWindow, simWidth, simHeight);
+    Grid grid(simWidth, simHeight);
     Simulator simulator(&grid);
     simulator.setTemperature(0.5);
     simulator.setChemPotential(-2.0f);
