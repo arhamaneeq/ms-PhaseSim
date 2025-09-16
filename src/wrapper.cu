@@ -26,7 +26,7 @@ void copyMemory(void* dst, const void* src, size_t bytes, int direction) {
     }
 }
 
-void markovStep(uint8_t* d_cells, int w, int h, float T, float mu, curandState* states) {
+void markovStep(Cell* d_cells, int w, int h, float T, float mu, curandState* states) {
     dim3 block(16, 16);
     dim3 grid((w + block.x - 1) / block.x,
               (h + block.y - 1) / block.y

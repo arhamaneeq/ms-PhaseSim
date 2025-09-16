@@ -97,12 +97,12 @@ SDL_Color Renderer::heatmapper(uint8_t v, uint8_t threshold) const {
     return color;
 }
 
-void Renderer::updateTexture(const uint8_t* data, int gridW, int gridH) {
+void Renderer::updateTexture(const Cell* data, int gridW, int gridH) {
     void* pixels;
     int pitch;
     SDL_LockTexture(sdlTexture, nullptr, &pixels, &pitch);
 
-    Uint8* pixels8 = reinterpret_cast<Uint8*>(pixels);
+    Cell* pixels8 = reinterpret_cast<Cell*>(pixels);
     for (int y = 0; y < gridH; ++y) {
         Uint32* row = reinterpret_cast<Uint32*>(pixels8 + y * pitch);
         for (int x = 0; x < gridW; ++x) {

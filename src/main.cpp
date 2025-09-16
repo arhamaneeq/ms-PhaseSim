@@ -9,8 +9,8 @@
 
 int main(int argc, char const *argv[])
 {
-    const int simWidth  = 1600;
-    const int simHeight = 1600;
+    const int simWidth  = 50;
+    const int simHeight = 50;
 
     const int winWidth  = 800;
     const int winHeight = 600;

@@ -7,6 +7,8 @@
 #include "simulator.hpp"
 
 class Renderer {
+    using Cell = uint8_t;
+
     public:
         Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow, uint16_t gridW, uint16_t gridH);
         ~Renderer();
