@@ -6,7 +6,7 @@
 #include "wrapper.cuh"
 
 class Grid {
-    using Cell = uint8_t;
+    using Cell = bool;
 
     public:
         Grid(uint16_t w, uint16_t h);

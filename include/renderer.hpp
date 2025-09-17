@@ -7,7 +7,7 @@
 #include "simulator.hpp"
 
 class Renderer {
-    using Cell = uint8_t;
+    using Cell = bool;
 
     public:
         Renderer(uint16_t w, uint16_t h, SDL_Window* sdlWindow, uint16_t gridW, uint16_t gridH);
@@ -23,6 +23,7 @@ class Renderer {
         uint16_t getHeight() const;
 
         void updateTexture(const uint8_t* data, int gridW, int gridH);
+        void updateTexture(const Cell* data, int gridW, int gridH);
 
     private:
         uint16_t w_width, w_height; // dimensions for window
@@ -33,4 +34,5 @@ class Renderer {
         SDL_Texture* sdlTexture;
 
         SDL_Color heatmapper(const uint8_t v, uint8_t threshold) const;
+        SDL_Color heatmapper(const Cell v) const;
 };

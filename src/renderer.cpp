@@ -97,6 +97,24 @@ SDL_Color Renderer::heatmapper(uint8_t v, uint8_t threshold) const {
     return color;
 }
 
+SDL_Color Renderer::heatmapper(const Cell v) const {
+    SDL_Color c;
+
+    if (v == false) {
+        c.r = 12;
+        c.g = 12;
+        c.b = 12;
+        c.a = 255;
+    } else {
+        c.r = 200;
+        c.g = 200;
+        c.b = 255;
+        c.a = 255;
+    }
+
+    return c;
+}
+
 void Renderer::updateTexture(const Cell* data, int gridW, int gridH) {
     void* pixels;
     int pitch;
@@ -106,7 +124,7 @@ void Renderer::updateTexture(const Cell* data, int gridW, int gridH) {
     for (int y = 0; y < gridH; ++y) {
         Uint32* row = reinterpret_cast<Uint32*>(pixels8 + y * pitch);
         for (int x = 0; x < gridW; ++x) {
-            SDL_Color c = heatmapper(data[y * gridW + x], 127);
+            SDL_Color c = heatmapper(data[y * gridW + x]);
             row[x] = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
         }
     }

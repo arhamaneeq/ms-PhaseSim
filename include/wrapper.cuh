@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "kernels.cuh"
 
-using Cell = uint8_t;
+using Cell = bool;
 
 
 void* allocateDeviceMemory(size_t bytes);
