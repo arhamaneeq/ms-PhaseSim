@@ -10,6 +10,8 @@ Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5), w(grid->getWidth
     TCrit  = 0.567;
     Tmin = 0;
     Tmax = 2* TCrit;
+
+    J = 0.01;
 }
 
 Simulator::~Simulator() {
@@ -58,5 +60,5 @@ void Simulator::decrementChemPotential(float f) {
 }
 
 void Simulator::step() {
-    markovStep(grid->getDeviceData(), w, h, T, mu, randStates);
+    markovStep(grid->getDeviceData(), w, h, T, mu, randStates, J);
 }

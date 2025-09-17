@@ -26,11 +26,11 @@ void Grid::syncToHost() {
     copyMemory(h_cells, d_cells, size * sizeof(Cell), cudaMemcpyDeviceToHost);
 }
 
-uint8_t* Grid::getDeviceData() {
+Cell* Grid::getDeviceData() {
     return d_cells;
 }
 
-uint8_t* Grid::getHostData() const {
+Cell* Grid::getHostData() const {
     return h_cells;
 }
 

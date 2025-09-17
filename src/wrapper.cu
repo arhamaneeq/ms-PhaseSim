@@ -26,15 +26,15 @@ void copyMemory(void* dst, const void* src, size_t bytes, int direction) {
     }
 }
 
-void markovStep(Cell* d_cells, int w, int h, float T, float mu, curandState* states) {
+void markovStep(Cell* d_cells, int w, int h, float T, float mu, curandState* states, float J) {
     dim3 block(16, 16);
     dim3 grid((w + block.x - 1) / block.x,
               (h + block.y - 1) / block.y
     );
 
-    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 0);
+    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 0, J);
     cudaDeviceSynchronize();
-    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 1);
+    markovSweep<<<grid, block>>>(d_cells, w, h, T, mu, states, 1, J);
     cudaDeviceSynchronize();
 }
 

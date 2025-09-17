@@ -29,8 +29,10 @@ class Simulator {
         Grid* grid;
         float T, mu;
         int w, h;
+
         curandState* randStates;
 
+        float J;
         float TCrit, Tmin, Tmax;
         float MuCrit, MuMin, MuMax;
 };
