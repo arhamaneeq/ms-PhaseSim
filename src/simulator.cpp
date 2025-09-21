@@ -36,27 +36,27 @@ double Simulator::getChemPotential() const {
 void Simulator::incrementTemperature(float f) {
     if (not(T >= Tmax)) T += f;
     if (T > Tmax) T = Tmax;
-    std::cout << T << std::endl;
+    std::cout << "T: " << T << std::endl;
 }
 
 void Simulator::decrementTemperature(float f) {
     if (not(T <= Tmin)) T -= f;
     if (T < Tmin) T = Tmin;
-    std::cout << T << std::endl;
+    std::cout << "T: " <<  T << std::endl;
 }
 
 void Simulator::incrementChemPotential(float f) {
     //f /= 255;
     if (not(mu >= MuMax)) mu += f;
     if (mu > MuMax) mu = MuMax;
-    std::cout << mu << std::endl;
+    std::cout << "u: " <<  mu << std::endl;
 }
 
 void Simulator::decrementChemPotential(float f) {
     //f /= 255;
     if (not(mu < MuMin)) mu -= f;
     if (mu < MuMin) mu = MuMin;
-    std::cout << mu << std::endl;
+    std::cout << "u: " <<  mu << std::endl;
 }
 
 void Simulator::step() {
