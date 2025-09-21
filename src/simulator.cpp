@@ -5,12 +5,12 @@ Simulator::Simulator(Grid* grid) : grid(grid), w(grid->getWidth()), h(grid->getH
     
     J = 0.25;
 
-    MuCrit = 0.0f;
-    MuMin = -1.5f;
-    MuMax = 1.5f;
+    MuCrit = - 2.0f * J;
+    MuMin = MuCrit - 0.75f;
+    MuMax = MuCrit + 0.75f;
 
     
-    TCrit  = 0.5 * J * logf(1 + sqrt(2));
+    TCrit  = 2.0 * J / logf(1 + sqrt(2));
     Tmin = 0;
     Tmax = 2* TCrit;
     
