@@ -21,17 +21,15 @@ __global__ void markovSweep(Cell* d_input, int w, int h, float T, float mu, cura
     //     delN = (r1 < 0.5f) ? -1 : +1;
     // }
 
-    if (r1 <= 0.5) {
-        delN = (r2 <= 0.5) ? +1 : -1;
-    }
+    delN = (r1 <= 0.5) ? -1 : +1;
 
-    float delE = deltaE(d_input, w, h, x, y, delN, J, 0);
+    float delE = deltaE(d_input, w, h, x, y, delN, J);
     // float k = 1;
     // float beta = 1 / (k * T);
     float delPhi = delE - mu * delN;
     float p_acc;
 
-    if (T <= 1e-6f) { p_acc = (delPhi < 0.0f ? 1.0f : 0.0f); }
+    if (T <= 1e-6f) { p_acc = fminf(1.0f, expf(-delPhi / 1e-6f)); }
     else { p_acc = fminf(1.0f, expf(-delPhi / T)); }
 
     if (r2 < p_acc) {
@@ -47,24 +45,24 @@ __global__ void initRNG(curandState* states, unsigned long seed, int w) {
     curand_init(seed, idx, 0, &states[idx]);
 }
 
-__device__ float deltaE(const Cell* d_input, int w, int h, int x, int y, int delN, float J, float eps) {
+__device__ float deltaE(const Cell* d_input, int w, int h, int x, int y, int delN, float J) {
     int xL = (x == 0) ? w - 1 : x - 1;
     int xR = (x == w - 1) ? 0 : x + 1;
     int yU = (y == 0) ? h - 1 : y - 1;
     int yD = (y == h - 1) ? 0 : y + 1;
     
-    float sumN  = spinVal(d_input[y * w + xL], y, x, w, d_input)
-                + spinVal(d_input[y * w + xR], y, x, w, d_input)
-                + spinVal(d_input[yU * w + x], y, x, w, d_input)
-                + spinVal(d_input[yD * w + x], y, x, w, d_input);
+    float sumN  = occupancy(d_input[y * w + xL])
+                + occupancy(d_input[y * w + xR])
+                + occupancy(d_input[yU * w + x])
+                + occupancy(d_input[yD * w + x]);
 
 
     float delS = delN;
-    float deltaE = - J * (float)  delS * sumN + eps * (float) delS;
+    float deltaE = - J * (float)  delS * sumN;
     return deltaE;
 
 }
 
-__device__ float spinVal(Cell v, int y, int x, int w, const Cell* d_input) {
-    return static_cast<float>(v == d_input[y*w + x]);
+__device__ float occupancy(Cell v) {
+    return v ? 1.0f : 0.0f;
 }

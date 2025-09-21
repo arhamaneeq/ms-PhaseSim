@@ -1,15 +1,15 @@
 #include "simulator.hpp"
 
-Simulator::Simulator(Grid* grid) : grid(grid), T(0.5), mu(0.5), w(grid->getWidth()), h(grid->getHeight()) {
+Simulator::Simulator(Grid* grid) : grid(grid), w(grid->getWidth()), h(grid->getHeight()) {
     randStates = genRands(w, h);
     
     J = 0.25;
 
-    MuCrit = -2.0f;
-    MuMin = -3.0f;
-    MuMax = -1.0f;
+    MuCrit = 0.0f;
+    MuMin = -1.5f;
+    MuMax = 1.5f;
 
-    TCrit  = 0.567;
+    TCrit  = 0.5 * J * logf(1 + sqrt(2));
     Tmin = 0;
     Tmax = 2* TCrit;
 }
