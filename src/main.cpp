@@ -55,16 +55,16 @@ int main(int argc, char const *argv[])
                         quit = true;
                         break;
                     case SDLK_UP:
-                        simulator.incrementChemPotential(0.1f);
+                        simulator.incrementChemPotential();
                     break;
                     case SDLK_DOWN:
-                        simulator.decrementChemPotential(0.1f);
+                        simulator.decrementChemPotential();
                     break;
                     case SDLK_RIGHT:
-                        simulator.incrementTemperature(0.1f);
+                        simulator.incrementTemperature();
                     break;
                     case SDLK_LEFT:
-                        simulator.decrementTemperature(0.1f);
+                        simulator.decrementTemperature();
                         break;
                     default:
                         std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;

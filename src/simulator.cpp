@@ -9,9 +9,13 @@ Simulator::Simulator(Grid* grid) : grid(grid), w(grid->getWidth()), h(grid->getH
     MuMin = -1.5f;
     MuMax = 1.5f;
 
+    
     TCrit  = 0.5 * J * logf(1 + sqrt(2));
     Tmin = 0;
     Tmax = 2* TCrit;
+    
+    MuStep = (MuMax - MuCrit) / 25.0f;
+    Tstep = (Tmax - Tmin) / 25.0f;
 }
 
 Simulator::~Simulator() {
@@ -33,28 +37,28 @@ double Simulator::getTemperature() const {
 double Simulator::getChemPotential() const {
     return mu;
 }
-void Simulator::incrementTemperature(float f) {
-    if (not(T >= Tmax)) T += f;
+void Simulator::incrementTemperature() {
+    if (not(T >= Tmax)) T += Tstep;
     if (T > Tmax) T = Tmax;
     std::cout << "T: " << T << std::endl;
 }
 
-void Simulator::decrementTemperature(float f) {
-    if (not(T <= Tmin)) T -= f;
+void Simulator::decrementTemperature() {
+    if (not(T <= Tmin)) T -= Tstep;
     if (T < Tmin) T = Tmin;
     std::cout << "T: " <<  T << std::endl;
 }
 
-void Simulator::incrementChemPotential(float f) {
+void Simulator::incrementChemPotential() {
     //f /= 255;
-    if (not(mu >= MuMax)) mu += f;
+    if (not(mu >= MuMax)) mu += MuStep;
     if (mu > MuMax) mu = MuMax;
     std::cout << "u: " <<  mu << std::endl;
 }
 
-void Simulator::decrementChemPotential(float f) {
+void Simulator::decrementChemPotential() {
     //f /= 255;
-    if (not(mu < MuMin)) mu -= f;
+    if (not(mu < MuMin)) mu -= MuStep;
     if (mu < MuMin) mu = MuMin;
     std::cout << "u: " <<  mu << std::endl;
 }

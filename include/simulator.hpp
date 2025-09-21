@@ -18,10 +18,10 @@ class Simulator {
         double getTemperature() const;
         double getChemPotential() const;
 
-        void incrementTemperature(float f);
-        void incrementChemPotential(float f);
-        void decrementTemperature(float f);
-        void decrementChemPotential(float f);
+        void incrementTemperature();
+        void incrementChemPotential();
+        void decrementTemperature();
+        void decrementChemPotential();
 
         void step();
 
@@ -33,6 +33,6 @@ class Simulator {
         curandState* randStates;
 
         float J;
-        float TCrit, Tmin, Tmax;
-        float MuCrit, MuMin, MuMax;
+        float TCrit, Tmin, Tmax, Tstep;
+        float MuCrit, MuMin, MuMax, MuStep;
 };
