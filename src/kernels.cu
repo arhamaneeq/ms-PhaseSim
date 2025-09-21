@@ -1,6 +1,6 @@
 #include "kernels.cuh"
 
-__global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, curandState* states, int offset, float J) {
+__global__ void markovSweep(Cell* d_input, int w, int h, float T, float mu, curandState* states, int offset, float J) {
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
     int idx = y * w + x;
@@ -13,12 +13,16 @@ __global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, c
     states[idx] = localState;
 
     int delN;
-    if (d_input[idx] == 0) {
-        delN = 1;
-    } else if (d_input[idx] == 255) {
-        delN = -1;
-    } else {
-        delN = (r1 < 0.5f) ? -1 : +1;
+    // if (d_input[idx] == 0) {
+    //     delN = 1;
+    // } else if (d_input[idx] == 255) {
+    //     delN = -1;
+    // } else {
+    //     delN = (r1 < 0.5f) ? -1 : +1;
+    // }
+
+    if (r1 <= 0.5) {
+        delN = (r2 <= 0.5) ? +1 : -1;
     }
 
     float delE = deltaE(d_input, w, h, x, y, delN, J, 0);
@@ -31,7 +35,7 @@ __global__ void markovSweep(uint8_t* d_input, int w, int h, float T, float mu, c
     else { p_acc = fminf(1.0f, expf(-delPhi / T)); }
 
     if (r2 < p_acc) {
-        d_input[idx] += delN;
+        d_input[idx] = (delN == 1) ? true : false;
     }
 }
 
@@ -43,24 +47,24 @@ __global__ void initRNG(curandState* states, unsigned long seed, int w) {
     curand_init(seed, idx, 0, &states[idx]);
 }
 
-__device__ float deltaE(const uint8_t* d_input, int w, int h, int x, int y, int delN, float J, float eps) {
+__device__ float deltaE(const Cell* d_input, int w, int h, int x, int y, int delN, float J, float eps) {
     int xL = (x == 0) ? w - 1 : x - 1;
     int xR = (x == w - 1) ? 0 : x + 1;
     int yU = (y == 0) ? h - 1 : y - 1;
     int yD = (y == h - 1) ? 0 : y + 1;
     
-    float sumN  = spinVal(d_input[y * w + xL])
-                + spinVal(d_input[y * w + xR])
-                + spinVal(d_input[yU * w + x])
-                + spinVal(d_input[yD * w + x]);
+    float sumN  = spinVal(d_input[y * w + xL], y, x, w, d_input)
+                + spinVal(d_input[y * w + xR], y, x, w, d_input)
+                + spinVal(d_input[yU * w + x], y, x, w, d_input)
+                + spinVal(d_input[yD * w + x], y, x, w, d_input);
 
 
-    float delS = delN / 127.0f;
+    float delS = delN;
     float deltaE = - J * (float)  delS * sumN + eps * (float) delS;
     return deltaE;
 
 }
 
-__device__ float spinVal(uint8_t v) {
-    return (static_cast<float>(v)) / 255.0f;
+__device__ float spinVal(Cell v, int y, int x, int w, const Cell* d_input) {
+    return static_cast<float>(v == d_input[y*w + x]);
 }
