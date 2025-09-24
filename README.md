@@ -1,5 +1,7 @@
 # Metrpolis MCMC Simulation of Vapour-Phase Model
 
+![Image of Simulator #48c136f](./images/phaseSim.png "Sim")
+
 ## How to Use
 
 Once the simulation Window opens, use the arrow keys to change the simulation paramters.
