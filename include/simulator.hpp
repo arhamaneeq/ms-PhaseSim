@@ -18,10 +18,15 @@ class Simulator {
         double getTemperature() const;
         double getChemPotential() const;
 
+        float getTemperatureNorm() const;
+        float getChemPotentialNorm() const;
+
         void incrementTemperature();
         void incrementChemPotential();
         void decrementTemperature();
         void decrementChemPotential();
+
+        void toCritical();
 
         void step();
 

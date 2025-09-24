@@ -16,7 +16,7 @@ class Renderer {
         void update(Grid* grid, Simulator* sim);
 
         void drawGrid(uint16_t gridW, uint16_t gridH);
-        void drawBox();
+        void drawBox(float x, float y);
         void waitForExit();
 
         uint16_t getWidth() const;

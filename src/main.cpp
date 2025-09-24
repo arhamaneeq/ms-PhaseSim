@@ -9,7 +9,7 @@
 
 int main(int argc, char const *argv[])
 {
-    const int simWidth  = 500;
+    const int simWidth  = 750;
     const int simHeight = 500;
 
     const int winWidth  = 1200;
@@ -38,8 +38,6 @@ int main(int argc, char const *argv[])
     Renderer renderer(winWidth, winHeight, sdlWindow, simWidth, simHeight);
     Grid grid(simWidth, simHeight);
     Simulator simulator(&grid);
-    simulator.setTemperature(0.5);
-    simulator.setChemPotential(-2.0f);
 
     bool quit = false;
     SDL_Event e;
@@ -49,7 +47,7 @@ int main(int argc, char const *argv[])
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
-                std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
+                //std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
                 switch (e.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         quit = true;
@@ -66,8 +64,19 @@ int main(int argc, char const *argv[])
                     case SDLK_LEFT:
                         simulator.decrementTemperature();
                         break;
+                    case SDLK_c:
+                        simulator.toCritical();
+                        break;
+                    case SDLK_p:
+                        std::cout << "Log:"<<
+                        "\n T: " 
+                        << simulator.getTemperature() << " (" << simulator.getTemperatureNorm() << "%)" <<
+                        "\n u: "
+                        << simulator.getChemPotential() << " (" << simulator.getChemPotentialNorm() << "%)" << std::endl;
+                        break;
                     default:
                         std::cout << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
+                        break;
                 }
             }
         }
